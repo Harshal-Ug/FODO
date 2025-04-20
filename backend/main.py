@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
+from chatbot import ChatMessage, ChatRequest, get_groq_response, create_system_prompt
 
 load_dotenv()
 
@@ -163,6 +164,24 @@ async def token(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": access_token, "token_type": "bearer"}
 
 # Chat endpoints
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    try:
+        # Add system prompt if it's a new conversation
+        if len(request.messages) == 1:
+            system_message = ChatMessage(role="system", content=create_system_prompt())
+            request.messages.insert(0, system_message)
+        
+        # Get response from Groq
+        response = await get_groq_response(request.messages)
+        
+        return {
+            "status": "ok",
+            "response": response
+        }
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}
+
 @app.post("/chat/messages", response_model=ChatMessageResponse)
 async def send_message(
     message: ChatMessageCreate,

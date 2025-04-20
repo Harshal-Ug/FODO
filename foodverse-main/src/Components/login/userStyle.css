@@ -1,0 +1,134 @@
+.sub-container{
+    display: flex;
+    flex-direction: column ;
+    width: 600px;
+    margin: auto;
+    margin-top: 40px;
+    background: #ffffff;
+    padding-bottom: 30px;
+    border: 5px solid black; 
+}
+
+.header{
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 50px; 
+    
+}
+
+.text{
+    color: #ff0000;
+    font-size: 30px;
+    font-weight: 700;
+    margin-left: 80px;
+    margin-top: 40px;
+}
+
+.buttonText{
+    color: #ffffff;
+    background-color: red ;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-left: 230px;
+    border: solid black;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+.buttonText:hover{
+    color: red;
+    background-color: white;
+}
+
+.underline{
+    margin-top: 15px;
+    margin-left: 10px;
+    width: 61px;
+    height: 6px;
+    background: #00d9ff;
+    border-radius: 9px;
+}
+
+.inputs{
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-right: 400px;
+}
+
+.input{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    width: 100px;
+    height: 50px;
+    background: #eaeaea;
+    border-radius: 6px;
+}
+
+.input img{
+    margin: 0px 30px;
+}
+
+.input input{
+    height: 50px;
+    width: 400px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #797979;
+    font-size: 19px;
+}
+
+.forgot-password{
+    
+    padding-left: 62px;
+    margin-top: 27px;
+    
+    font-size: 18px;
+    color: black;
+}
+
+.inputs input:active{   
+    border: 5px black;
+
+}
+
+.forgot-password span{
+    color: #02ffea;
+    cursor: pointer;
+
+}
+
+.submit-container{
+    display: flex;
+    gap: 30px;
+    margin-top: 15px;
+   margin-left: 58px;
+   margin-bottom: 10px;
+}
+
+.submit{
+display: flex;
+justify-content: center;
+align-items: center;
+width: 220px;
+height: 59px;
+color: #fff;
+background-color: #ff0000;
+border-radius: 50px;
+font-size: 19px;
+font-weight: 700;
+cursor: pointer;
+}
+
+.gray{
+    background-color: #EAEAEA;
+    color: #676767;
+}

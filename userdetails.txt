@@ -1,0 +1,71 @@
+import React,{Component} from 'react'
+import user_icon from "../Assets/person.png"
+import email_icon from "../Assets/email.png"
+import "../login/userStyle.css"
+
+export class userDetails extends Component {
+s
+    componentDidMount(){
+        fetch("http://localhost:5000/userData",{
+      method: "POST",
+      crossDomain:true,
+      headers: {
+        "Content-Type":"application/json",
+        Accept:"application/json",
+        "Access-Control-Allow-Origin":"*",
+      },
+      body:JSON.stringify({
+        token: window.localStorage.getItem("token") ,
+      }),
+
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+      console.log(data,"userData");
+      alert("Sign Up Successful");
+    //   setIsLoggedIn(true);
+    // setUsername(uname); // Set username based on your implementation
+    // setEmail(email); // Set email based on your implementation
+
+    });
+    }
+
+    render(){
+        return (
+            <div className="container">
+            <div className="sub-container">
+            <form>
+        <div className="header">
+          
+                <div className="text"></div>
+                <div className="underline"></div>
+                <div className="input">
+        
+                  
+                    <img src={user_icon} alt="" />
+                    <input type="text"  />
+                  </div> 
+                
+    
+        
+                  <div className="input">
+                    <img src={email_icon} alt="" />
+                    <input type="email"  />
+                  </div>
+
+                </div>
+                </form>
+              </div>
+              </div>
+              
+              
+              
+        
+            
+            
+        );
+
+    }
+}
+
+export default userDetails;

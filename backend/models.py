@@ -1,10 +1,10 @@
 from typing import Optional
 from beanie import Document, Indexed
-from pydantic import EmailStr
+from pydantic import EmailStr, Field
 from datetime import datetime
 
 class User(Document):
-    email: Indexed(EmailStr, unique=True)
+    email: Indexed(EmailStr, unique=True, collation={"locale": "en", "strength": 2}) = Field(..., nullable=False)
     name: str
     hashed_password: str
     is_active: bool = True

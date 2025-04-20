@@ -3,29 +3,46 @@ import user_icon from "../Assets/person.png"
 import email_icon from "../Assets/email.png"
 import "../login/userStyle.css";
 
-const UserDetails = ({ username, email }) => {
+const UserDetails = ({ user, onClose }) => {
   const handleLogout = () => {
     window.localStorage.clear();
     window.location.href = "/login";
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <div className="container">
-      <div className="sub-container">
-        <div className="header">
-          <div className="text">Welcome, {username}!</div>
-          <div className="underline"></div>
+    <div className="popup-overlay">
+      <div className="popup-container">
+        <div className="popup-header">
+          <div className="text">Welcome, {user.name}!</div>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <div className="underline"></div>
+        <div className="popup-content">
           <div className="inputs">
             <div className="input">
               <img src={user_icon} alt="" />
-              <input type="text" value={username} readOnly />
+              <input 
+                type="text" 
+                value={user.name} 
+                readOnly 
+                placeholder="Username"
+              />
             </div>
             <div className="input">
               <img src={email_icon} alt="" />
-              <input type="email" value={email} readOnly />
+              <input 
+                type="email" 
+                value={user.email} 
+                readOnly 
+                placeholder="Email"
+              />
             </div>
           </div>
-          <button className="buttonText" onClick={handleLogout}>
+          <button className="logout-button" onClick={handleLogout}>
             Log Out
           </button>
         </div>

@@ -77,15 +77,19 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 @app.post("/register")
 async def register(user: UserCreate):
     try:
+        # Validate email
+        if not user.email or user.email.strip() == "":
+            return {"status": "error", "detail": "Email cannot be empty"}
+            
         # Check if user already exists
-        existing_user = await User.find_one({"email": user.email})
+        existing_user = await User.find_one({"email": user.email.lower()})
         if existing_user:
             return {"status": "error", "detail": "Email already registered"}
         
         # Create new user
         hashed_password = get_password_hash(user.password)
         db_user = User(
-            email=user.email,
+            email=user.email.lower(),
             name=user.name,
             hashed_password=hashed_password,
             address=user.address
@@ -110,11 +114,21 @@ async def register(user: UserCreate):
 @app.post("/login")
 async def login(login_data: LoginRequest):
     try:
-        user = await User.find_one({"email": login_data.email})
-        if not user or not verify_password(login_data.password, user.hashed_password):
+        user = await User.find_one({"email": login_data.email.lower()})
+        if not user:
+            return {"status": "error", "detail": "Incorrect email or password"}
+            
+        if not verify_password(login_data.password, user.hashed_password):
+            # Record failed login attempt
+            login_history = LoginHistory(
+                user_id=str(user.id),
+                status="failed",
+                failure_reason="Invalid password"
+            )
+            await login_history.insert()
             return {"status": "error", "detail": "Incorrect email or password"}
         
-        # Record login history
+        # Record successful login
         login_history = LoginHistory(
             user_id=str(user.id),
             status="success"
@@ -185,6 +199,21 @@ async def get_chat_history(current_user: User = Depends(get_current_user)):
         ]
     }).sort(-ChatMessage.timestamp).to_list()
     return messages
+
+# Get current user endpoint
+@app.get("/user/me")
+async def get_current_user(current_user: User = Depends(get_current_user)):
+    try:
+        return {
+            "status": "ok",
+            "user": {
+                "id": str(current_user.id),
+                "email": current_user.email,
+                "name": current_user.name
+            }
+        }
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
